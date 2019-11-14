@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% set active_page = "home" %}
+
+{% block title %}USD to Yuan{% endblock %}
+
+{% block content %}
+<h1>USD to Yuan Converter</h1>
+  <form action='/response'>
+      USD to Chinese Yuan<br>
+      <input type="number" min="1" name="USD">
+      <br><br>
+      <input type="submit">
+   </form>
+{% endblock %}
