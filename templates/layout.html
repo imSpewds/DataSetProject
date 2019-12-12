@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
   <link rel="stylesheet" href="style.css">
-  <title>{% block title %}{% endblock %} - My Converter</title>
+  <title>{% block title %}{% endblock %} - Police Shootings</title>
 
   </head>
   <body>
@@ -23,13 +23,13 @@
       </button>
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
-          <li {% if active_page == "home" %}class="active"{% endif %}>
+          <li {% if active_page == "page1" %}class="active"{% endif %}>
             <a class="nav-link" href="home.html">Page 1</a>
           </li>
-          <li {% if active_page == "page1" %}class="active"{% endif %}>
+          <li {% if active_page == "page2" %}class="active"{% endif %}>
             <a class="nav-link" href="/p1">Page 2</a>
           </li>
-          <li {% if active_page == "page2" %}class="active"{% endif %}>
+          <li {% if active_page == "page3" %}class="active"{% endif %}>
             <a class="nav-link" href="/p2">Page 3</a>
           </li>
         </ul>
