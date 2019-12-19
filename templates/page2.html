@@ -4,7 +4,14 @@
 
 {% block title %} Facts {% endblock %}
 
-{% block header %}Stuff{% endblock %}
+{% block header %}Shootings by Name{% endblock %}
 
 {% block content %}
+<form action="/response">
+	<select name="name"> {{ options }} </select>
+	<br><br>
+	<input type="submit">
+	<br><br>
+</form>
+{{ shootingFact }}
 {% endblock %}

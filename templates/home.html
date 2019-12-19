@@ -2,11 +2,15 @@
 
 {% set active_page = "page1" %}
 
-{% block title %} Info {% endblock %}
+{% block title %} Dataset Info {% endblock %}
 
 {% block header %}About the Police Shootings Dataset{% endblock %}
 
 {% block content %}
-The Police Shooting Dataset used in this webapp can be found <a href="https://corgis-edu.github.io/corgis/json/police_shootings/">here</a>. 
-The data used for this project includes police shootings from 2015 to 2019 making it relatively new.  
+The Police Shooting Dataset used in this web app can be found <a href="https://corgis-edu.github.io/corgis/json/police_shootings/">here</a>. 
+The statistics used for this project is compiled by the FBI and the Centers for Disease Control and Prevention and it contains data on police shootings from January 2, 2015 to May 20, 2019. 
+The statistics are "updated regularly as fatal shootings are reported and as facts emerge about individual cases." <a href="https://www.washingtonpost.com/national/how-the-washington-post-is-examining-police-shootings-in-the-united-states/2016/07/07/d9c52238-43ad-11e6-8856-f26de2537a9d_story.html">(source)</a><br><br>
+The type of statistics contained in this data vary from the race of the victim of the shooting, whether they attempted to flee, or if they had any mental illnesses.
+Dates of when the incidents occured are also included in the dataset. As of today, December 12, 2019, the last recorded shooting was in May 20, 2019 but the FBI and CDC are "seeking assistance in making the database as comprehensive as possible" <a href="https://www.washingtonpost.com/national/how-the-washington-post-is-examining-police-shootings-in-the-united-states/2016/07/07/d9c52238-43ad-11e6-8856-f26de2537a9d_story.html">(source)</a> 
+which includes sending them information on shootings via their email at <a href="mailto:policeshootingsfeedback@washpost.com">policeshootingsfeedback@washpost.com</a>
 {% endblock %}
