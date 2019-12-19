@@ -7,40 +7,85 @@ app = Flask(__name__)
 with open('police_shootings.json') as shootings_data:
     shootings = json.load(shootings_data)
     
-"""Gets the victims names and if there is a duplicate name, add an ID num ex.) TK TK, TK TK(1), TK TK(2)..."""
+"""Gets the victims names and if there is the name TK TK, don't include"""
 def get_victim_names():
-    listOfNamesWithDup = []
     listOfNames = []
     for key in shootings:
-        listOfNamesWithDup.append(key['Person']['Name'])
-    for names in listOfNamesWithDup:
-        listOfNames.append(names)
-        index = 0
-        xName = ""
-        for name in listOfNamesWithDup:
-            index+=1
-            if listOfNamesWithDup[index] == name and index <= len(listOfNamesWithDup):#IndexError: list index out of range
-                xName = name + "(" + str(index) + ")"
-                listOfNames.append(xName)
-                listOfNamesWithDup.remove(name)
+        if key['Person']['Name'] != "TK TK":
+            listOfNames.append(key['Person']['Name'])
     options = ""
     for name in listOfNames:
         options = options + Markup("<option value=\"" + name + "\">" + name + "</option>")
     return options
-"""Gets the date of the incident"""
+"""Gets the DATE of the incident"""
 def get_date(name):
     date = shootings[0]['Incident']['Date']['Full']
     for key in shootings:
         if key['Person']['Name'] == name:
             date = key['Incident']['Date']['Full']
     return date
+"""Gets the AGE of the victim"""
+def get_age(name):
+    age = shootings[0]['Person']['Age']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            age = key['Person']['Age']
+    return age
+"""Gets the GENDER of the victim"""
+def get_gender(name):
+    gender = shootings[0]['Person']['Gender']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            gender = key['Person']['Gender']
+    return gender
+"""Gets the RACE of the victim"""
+def get_race(name):
+    race = shootings[0]['Person']['Race']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            race = key['Person']['Race']
+    return race
+"""Gets the CITY of the where the incident took place"""
+def get_city(name):
+    city = shootings[0]['Incident']['Location']['City']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            city = key['Incident']['Location']['City']
+    return city
+"""Gets the STATE of the where the incident took place"""
+def get_state(name):
+    state = shootings[0]['Incident']['Location']['State']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            state = key['Incident']['Location']['State']
+    return state
+"""Gets the MANNER of the how the victim was taken down"""
+def get_manner(name):
+    manner = shootings[0]['Shooting']['Manner']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            manner = key['Shooting']['Manner']
+    return manner
+"""Gets whether victim was armed or not"""
+def get_armed(name):
+    armed = shootings[0]['Factors']['Armed']
+    for key in shootings:
+        if key['Person']['Name'] == name:
+            if key['Factors']['Armed'] == "unarmed":
+                armed = "The victim was " + key['Factors']['Armed']
+            elif key['Factors']['Armed'] == "unknown":
+                armed = "Whether the victim was carrying a weapon is " + key['Factors']['Armed']
+            else:
+                armed = "The victim carried a " + key['Factors']['Armed']
+    return armed
 """Compiles the functions into one fact"""
 def get_shooting_facts():
     name = request.args['name']
     fact = ""
     fact = fact + Markup(
-    "<h3>" + "ABOUT THE VICTIM" + "</h3>" + "<p>" + "Name: " + name + "<br>" + "Age: " + "AGE" + "<br>" +"Gender: " + "GENDER" + "<br>" +"Race: " + "RACE" + "<br>" + "</p>"
-    "<h3>" + "WHERE IT HAPPENED" + "</h3>" + "<p>" + "This victim was " + "MANNER" + " in " + "CITY" + " " + "STATE" + " on " + get_date(name) + "</p>")
+    "<h3>" + "ABOUT THE VICTIM" + "</h3>" + "<p>" + "Name: " + name + "<br>" + "Age: " + str(get_age(name)) + "<br>" +"Gender: " + get_gender(name) + "<br>" +"Race: " + get_race(name) + "<br>" + "</p>"
+    "<h3>" + "WHERE IT HAPPENED" + "</h3>" + "<p>" + "This victim was " + get_manner(name) + " in " + get_city(name) + " " + get_state(name) + " on " + get_date(name) + "</p>" + 
+    "<h3>" + "ADDITIONAL FACTORS" + "</h3>" + "<p>" + get_armed(name) + "</p>")
     return fact
 
 @app.route("/")
