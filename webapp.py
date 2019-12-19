@@ -7,11 +7,22 @@ app = Flask(__name__)
 with open('police_shootings.json') as shootings_data:
     shootings = json.load(shootings_data)
     
-"""Gets the victims names and if multiple of same name add a num ex.) TK TK(1), TK TK(2)..."""
+"""Gets the victims names and if there is a duplicate name, add an ID num ex.) TK TK, TK TK(1), TK TK(2)..."""
 def get_victim_names():
+    listOfNamesWithDup = []
     listOfNames = []
     for key in shootings:
-        listOfNames.append(key['Person']['Name'])
+        listOfNamesWithDup.append(key['Person']['Name'])
+    for names in listOfNamesWithDup:
+        listOfNames.append(names)
+        index = 0
+        xName = ""
+        for name in listOfNamesWithDup:
+            index+=1
+            if listOfNamesWithDup[index] == name and index <= len(listOfNamesWithDup):#IndexError: list index out of range
+                xName = name + "(" + str(index) + ")"
+                listOfNames.append(xName)
+                listOfNamesWithDup.remove(name)
     options = ""
     for name in listOfNames:
         options = options + Markup("<option value=\"" + name + "\">" + name + "</option>")
