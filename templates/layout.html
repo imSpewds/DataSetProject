@@ -12,7 +12,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+  {% block script %}{% endblock %}
 </head>
 
 <body>
@@ -44,8 +44,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
+		{% block content %}{% endblock %}
         <h1 class="mt-5">{% block header %}{% endblock %}</h1>
-        <p class="lead">{% block content %}{% endblock %}</p>
+        <p class="lead">{% block paragraph %}{% endblock %}</p>
       </div>
     </div>
   </div>

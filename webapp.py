@@ -3,11 +3,60 @@ import os
 import json
 
 app = Flask(__name__)
+@app.route("/")
+def render_main():
+    return render_template('home.html')
+    
+@app.route("/p2")
+def render_page2():
+    return render_template('page2.html', options = get_victim_names())
 
+@app.route("/response")
+def render_response():
+    return render_template('page2.html', options = get_victim_names(), shootingFact = get_shooting_facts())
+    
+@app.route("/p3")
+def render_page3():
+    return render_template('page3.html', data = get_pie_race())
+
+"""Gets race and formats it for the pie chart"""
+def get_pie_race():
+    asian = 0
+    african = 0
+    white = 0
+    hispanic = 0
+    native = 0
+    other = 0
+    unknown = 0
+    
+    listOfRaces = []
+    for key in shootings:
+        if key['Person']['Name'] != "TK TK":
+            listOfRaces.append(key['Person']['Race'])
+    for race in listOfRaces:
+        if race == "Asian":
+            asian+=1
+        elif race == "African American":
+            african+=1
+        elif race == "White":
+            white+=1
+        elif race == "Hispanic":
+            hispanic+=1
+        elif race == "Native American":
+            native+=1
+        elif race == "Other":
+            other+=1
+        else:
+            unknown+=1
+    data = ""
+    data = data + Markup("var data = google.visualization.arrayToDataTable([['Race', 'Number of Victims Shot'],['White', " + str(white) + "],['African American'," + str(african) + "],['Hispanic'," + str(hispanic) + "],['Unknown'," + str(unknown) + "],['Asian'," + str(asian) + "],['Native American'," + str(native) + "],['Other'," + str(other) + "]]);")
+    return data
+
+"""Allows the police_shootings.json file to be accessed"""
 with open('police_shootings.json') as shootings_data:
     shootings = json.load(shootings_data)
     
-"""Gets the victims names and if there is the name TK TK, don't include"""
+"""Gets the victims names and if there is the name, TK TK, don't include"""
 def get_victim_names():
     listOfNames = []
     for key in shootings:
@@ -130,25 +179,9 @@ def get_shooting_facts():
     fact = ""
     fact = fact + Markup(
     "<h3>" + "ABOUT THE VICTIM" + "</h3>" + "<p>" + "Name: " + name + "<br>" + "Age: " + str(get_age(name)) + "<br>" +"Gender: " + get_gender(name) + "<br>" +"Race: " + get_race(name) + "<br>" + "</p>"
-    "<h3>" + "WHERE IT HAPPENED" + "</h3>" + "<p>" + "This victim was " + get_manner(name) + " in " + get_city(name) + " " + get_state(name) + " on " + get_date(name) + "</p>" + 
+    "<h3>" + "WHERE IT HAPPENED" + "</h3>" + "<p>" + "This victim was " + get_manner(name) + " in " + get_city(name) + ", " + get_state(name) + " on " + get_date(name) + "</p>" + 
     "<h3>" + "ADDITIONAL FACTORS" + "</h3>" + "<p>" + "Threat Level: " + get_threat_level(name) + "<br>" + "Is Armed? : " + get_armed(name) + "<br>" + "Has a mental illness? : " + get_mental_illness(name) + "<br>" + "Is fleeing? : "+ get_fleeing(name) + "</p>")
     return fact
-
-@app.route("/")
-def render_main():
-    return render_template('home.html')
-    
-@app.route("/p2")
-def render_page2():
-    return render_template('page2.html', options = get_victim_names())
-
-@app.route("/response")
-def render_response():
-    return render_template('page2.html', options = get_victim_names(), shootingFact = get_shooting_facts())
-    
-@app.route("/p3")
-def render_page3():
-    return render_template('page3.html')
 
 if __name__== "__main__":
     app.run(debug=True)
