@@ -126,6 +126,8 @@ def get_armed(name):
                 armed = "Whether the victim was carrying a weapon is unknown"
             elif key['Factors']['Armed'] == "vehicle":
                 armed = "The victim was in their car"
+            elif key['Factors']['Armed'] == "undetermined":
+                armed = "Undetermined"
             elif key['Factors']['Armed'] == "vehicle and gun" or key['Factors']['Armed'] == "gun and vehicle":
                 armed = "The victim was in their car and carried a gun"
             else:
