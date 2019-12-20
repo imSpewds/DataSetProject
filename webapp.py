@@ -115,19 +115,23 @@ def get_manner(name):
         if key['Person']['Name'] == name:
             manner = key['Shooting']['Manner']
     return manner
-"""Gets whether victim was armed or not"""
+"""Gets whether victim was ARMED or not"""
 def get_armed(name):
     armed = shootings[0]['Factors']['Armed']
     for key in shootings:
         if key['Person']['Name'] == name:
             if key['Factors']['Armed'] == "unarmed":
-                armed = "The victim was " + key['Factors']['Armed']
+                armed = "The victim was unarmed" 
             elif key['Factors']['Armed'] == "unknown":
-                armed = "Whether the victim was carrying a weapon is " + key['Factors']['Armed']
+                armed = "Whether the victim was carrying a weapon is unknown"
+            elif key['Factors']['Armed'] == "vehicle":
+                armed = "The victim was in their car"
+            elif key['Factors']['Armed'] == "vehicle and gun" or key['Factors']['Armed'] == "gun and vehicle":
+                armed = "The victim was in their car and carried a gun"
             else:
                 armed = "The victim carried a " + key['Factors']['Armed']
     return armed
-"""Gets threat level of victim"""
+"""Gets THREAT level of victim"""
 def get_threat_level(name):
     threat_level = shootings[0]['Factors']['Threat-Level']
     for key in shootings:
@@ -139,9 +143,9 @@ def get_threat_level(name):
             else:
                 threat_level = "Other"
     return threat_level
-"""Gets whether the victim has a mental illness"""
+"""Gets whether the victim has a MENTAL ILLNESS"""
 def get_mental_illness(name):
-    mental_illness = False
+    mental_illness = ""
     for key in shootings:
         if key['Person']['Name'] == name:
             if key['Factors']['Mental-Illness'] == True:
@@ -149,7 +153,7 @@ def get_mental_illness(name):
             else:
                 mental_illness = "The victim did not have a mental illness"
     return mental_illness
-"""Gets whether the victim was fleeing"""
+"""Gets whether the victim was FLEEING"""
 def get_fleeing(name):
     fleeing = shootings[0]['Factors']['Fleeing']
     for key in shootings:
@@ -161,18 +165,16 @@ def get_fleeing(name):
             else:
                 fleeing = "The victim was fleeing via " + key['Factors']['Fleeing']
     return fleeing
-"""Gets whether the officer had a body-cam"""
+"""Gets whether the officer had a BODY-CAM"""
 def get_bodycam(name):
-    bodycam = shootings[0]['Shooting']['Body-Camera']
+    bodycam = ""
     for key in shootings:
         if key['Person']['Name'] == name:
             if key['Shooting']['Body-Camera'] == True:
-                bodycam = "The victim was not fleeing"
-            elif key['Factors']['Fleeing'] == "unknown":
-                fleeing = "Unknown"
+                bodycam = "*The officer had a body camera"
             else:
-                fleeing = "The victim was fleeing via " + key['Factors']['Fleeing']
-    return fleeing
+                bodycam = "*The officer did not have a body camera" 
+    return bodycam
 """Compiles the functions into one fact"""
 def get_shooting_facts():
     name = request.args['name']
@@ -180,7 +182,7 @@ def get_shooting_facts():
     fact = fact + Markup(
     "<h3>" + "ABOUT THE VICTIM" + "</h3>" + "<p>" + "Name: " + name + "<br>" + "Age: " + str(get_age(name)) + "<br>" +"Gender: " + get_gender(name) + "<br>" +"Race: " + get_race(name) + "<br>" + "</p>"
     "<h3>" + "WHERE IT HAPPENED" + "</h3>" + "<p>" + "This victim was " + get_manner(name) + " in " + get_city(name) + ", " + get_state(name) + " on " + get_date(name) + "</p>" + 
-    "<h3>" + "ADDITIONAL FACTORS" + "</h3>" + "<p>" + "Threat Level: " + get_threat_level(name) + "<br>" + "Is Armed? : " + get_armed(name) + "<br>" + "Has a mental illness? : " + get_mental_illness(name) + "<br>" + "Is fleeing? : "+ get_fleeing(name) + "</p>")
+    "<h3>" + "ADDITIONAL FACTORS" + "</h3>" + "<p>" + "Threat Level : " + get_threat_level(name) + "<br>" + "Is Armed? : " + get_armed(name) + "<br>" + "Has a mental illness? : " + get_mental_illness(name) + "<br>" + "Is fleeing? : "+ get_fleeing(name) + "<br><br>" + get_bodycam(name) + "</p>")
     return fact
 
 if __name__== "__main__":
