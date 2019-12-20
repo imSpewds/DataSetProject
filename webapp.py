@@ -186,4 +186,4 @@ def get_shooting_facts():
     return fact
 
 if __name__== "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
